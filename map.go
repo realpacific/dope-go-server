@@ -6,7 +6,7 @@ import (
 	"math/rand"
 )
 
-func main() {
+func RunMap() {
 
 	// Maps are unordered.
 	mappings := map[string]int{

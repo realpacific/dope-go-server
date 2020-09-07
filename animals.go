@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func main() {
+func Animals() {
 	c := Cat{"Tom"}
 	fmt.Println(c.speak())
 
@@ -14,7 +14,7 @@ func main() {
 
 	separator()
 
-	// Go dynamic arrays aka "slice" 
+	// Go dynamic arrays aka "slice"
 	animals := []Animal{Dog{"Snoop"}, Cat{"Meowt"}, PythonDeveloper{"SnakeEyes"}}
 	for i, animals := range animals {
 		fmt.Printf(fmt.Sprintf("%d. %s", i+1, animals.speak()))
@@ -25,7 +25,6 @@ func main() {
 
 }
 
-
 func separator() {
 	count := 0
 	for count < 30 {
@@ -33,7 +32,6 @@ func separator() {
 		count++
 	}
 	fmt.Println("-")
-		
 
 }
 
@@ -44,13 +42,13 @@ type Animal interface {
 	speak() string
 }
 
-type Cat struct{
+type Cat struct {
 	name string
 }
 
 func (c Cat) speak() string {
 	return fmt.Sprintf("%s says \"Meow\"", c.name)
-} 
+}
 
 type Dog struct {
 	name string
