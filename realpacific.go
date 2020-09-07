@@ -1,77 +1,35 @@
 package main
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
-	"net/http"
-	"strings"
+	"strconv"
 )
 
-var KEYS = []string{"full_name", "language", "stargazers_count"}
+type Project struct {
+	Name      string
+	Language  string
+	StarCount int
+}
 
-func main() {
-	repos, err := getAndExtract("https://api.github.com/users/realpacific", "repos_url")
+func GetGitHubUserRepos(username string) []Project {
+	reposUrl, err := GetAndExtract(fmt.Sprintf("https://api.github.com/users/%s", username), "repos_url")
 	if err != nil {
 		log.Fatal(err)
 	}
-	repositoryResults := getAsList(repos)
 
-	for _, result := range repositoryResults {
-		fmt.Println("------------")
-		for k, v := range result {
-			if contains(KEYS, k) {
-				fmt.Println(strings.Title(k)+":", v)
-			}
+	repositoryResults := GetAsList(reposUrl)
+
+	result := make([]Project, len(repositoryResults))
+
+	for index, repos := range repositoryResults {
+		starCount, _ := strconv.Atoi(fmt.Sprint(repos["stargazers_count"]))
+		user := Project{
+			Name:      fmt.Sprint(repos["full_name"]),
+			Language:  fmt.Sprint(repos["Language"]),
+			StarCount: starCount,
 		}
-	}
-}
-
-func getAndExtract(url, key string) (string, error) {
-	m := get(url)
-	fmt.Println(m)
-	if m[key] == nil {
-		return "", errors.New(key + " not found")
-	}
-	return fmt.Sprint(m[key]), nil
-}
-
-func getAsList(url string) []map[string]interface{} {
-	fmt.Println("Getting", url, "...")
-	resp, err := http.Get(url)
-	if err != nil || resp.StatusCode != 200 {
-		log.Fatal(err)
-	}
-
-	var result []map[string]interface{}
-	err = json.NewDecoder(resp.Body).Decode(&result)
-	if err != nil {
-		log.Fatal(err)
+		result[index] = user
 	}
 	return result
-}
-
-func get(url string) map[string]interface{} {
-	fmt.Println("Getting", url, "...")
-	resp, err := http.Get(url)
-	if err != nil || resp.StatusCode != 200 {
-		if resp != nil {
-			fmt.Println(resp.StatusCode)
-		}
-		log.Fatal(err)
-	}
-
-	var result map[string]interface{}
-	_ = json.NewDecoder(resp.Body).Decode(&result)
-	return result
-}
-
-func contains(slice []string, value string) bool {
-	for _, i := range slice {
-		if i == value {
-			return true
-		}
-	}
-	return false
 }

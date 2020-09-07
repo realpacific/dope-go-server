@@ -1,6 +1,6 @@
 # go-demo
 Simple GO Hello World
 
+To run server, use `go run .`
 
-
-`go run realpacific.go`
+`curl http://localhost:3000/user/realpacific` 

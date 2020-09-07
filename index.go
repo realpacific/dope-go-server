@@ -3,7 +3,7 @@ package main
 import "fmt"
 import m "math"
 
-func main() {
+func RunShape() {
 	i := 0
 	for i < 5 {
 		fmt.Println("Hello world")
@@ -12,13 +12,13 @@ func main() {
 
 	fmt.Println("----------------")
 	fmt.Println("Rectangle")
-	r := rect{ length: 25, breadth: 10 }
+	r := rect{length: 25, breadth: 10}
 	fmt.Println(r.area())
 	fmt.Println(r.perimeter())
 
 	fmt.Println("----------------")
 	fmt.Println("Circle")
-	c := circle{ radius: 5 }
+	c := circle{radius: 5}
 	fmt.Println(c.area())
 	fmt.Println(c.perimeter())
 
@@ -32,14 +32,13 @@ type shape interface {
 }
 
 type rect struct {
-	length float64
+	length  float64
 	breadth float64
 }
 
 func (r rect) area() float64 {
 	return r.length * r.breadth
 }
-
 
 func (r rect) perimeter() float64 {
 	return 2 * (r.length + r.breadth)
@@ -52,7 +51,6 @@ type circle struct {
 func (c circle) area() float64 {
 	return m.Pi * c.radius * c.radius
 }
-
 
 func (c circle) perimeter() float64 {
 	return m.Pi * 2 * c.radius
